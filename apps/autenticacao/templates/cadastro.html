@@ -1,0 +1,160 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+
+{% block 'head' %}
+    <link rel="stylesheet" href="{% static 'autenticacao/css/cadastro.css' %}">
+    
+{% endblock %}
+
+{% block 'titulo' %}Cadastre-se{% endblock %}
+
+{% block 'body' %}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-3 sidebar">
+                <div class="logo_sidebar">
+                    
+                    <h2 class="logo">
+                        <img class="img_logo_sidebar" src="{% static 'autenticacao/img/logo_meio_ambiente.png' %}" alt="Logo">
+                    </h2>
+
+                </div>
+
+                
+            </div>
+
+            <div class="col-md-9">
+                <div class="area_cadastrar">
+                    {% if messages %}
+                        <br>
+                        {% for message in messages %}
+                            <div class="alert {{message.tags}}">
+                                 {{message}}
+                            </div>
+                            {% endfor %}
+                    {% endif %}
+                    <h2 class="titulo">Seja bem vindo</h2>
+                    <p class="sub-titulo">Crie sua conta</p>
+                    <hr>
+                    
+                    <form action="{% url "cadastro" %}" method="POST">{% csrf_token %}
+
+                        <!-- Linha com dois campos: nome completo e tipo -->
+                        <div class="row">
+                            <div class="col-md-5">
+                                <label class="bold">Nome completo</label>
+                                <input class="form-control input-form" name="nome_completo" type="text" required>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="bold">Nome de Usuário</label>
+                                <input class="form-control input-form" name="usuario" type="text" required>
+                            </div>
+                            <div class="col-md-3">
+                                <label class="bold">Tipo de usuário</label>
+                                <select class="form-control input-form" name="tipo" required>
+                                    <option value="">Selecione...</option>
+                                    {% for valor, descricao in tipo_usuarios %}
+                                        <option value="{{ valor }}">{{ descricao }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                        <br>
+
+                        <!-- Linha com três campos: CEP, tipo_logradouro, número -->
+                        <div class="row">
+                            <div class="col-md-4">
+                                <label class="bold">CEP</label>
+                                <input class="form-control input-form" name="cep" type="text" required>
+                            </div>
+                            <div class="col-md-5">
+                                <label class="bold">Tipo de logradouro</label>
+                                <input class="form-control input-form" name="tipo_logradouro" type="text" required>
+                            </div>
+                            <div class="col-md-3">
+                                <label class="bold">Número</label>
+                                <input class="form-control input-form" name="numero" type="text" required>
+                            </div>
+                        </div>
+                        <br>
+
+                        <!-- Linha com dois campos: logradouro e cidade -->
+                        <div class="row">
+                            <div class="col-md-8">
+                                <label class="bold">Logradouro</label>
+                                <input class="form-control input-form" name="logradouro" type="text" required>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="bold">Cidade</label>
+                                <input class="form-control input-form" name="cidade" required></input>
+                            </div>
+                        </div>
+                        <br>
+
+                        <!-- Linha com UF e CPF/CNPJ -->
+                        <div class="row">
+                            <div class="col-md-4">
+                                <label class="bold">UF</label>
+                                <input class="form-control input-form" name="uf" type="text" maxlength="2" required>
+                            </div>
+                            <div class="col-md-8">
+                                <label class="bold">CPF ou CNPJ</label>
+                                <input class="form-control input-form" name="cpf_cnpj" type="text" required>
+                            </div>
+                        </div>
+                        <br>
+
+                        <!-- Linha com dois campos opcionais: Contato e Telefone -->
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label class="bold">Contato</label>
+                                <input class="form-control input-form" name="contato" type="text">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="bold">Telefone</label>
+                                <input class="form-control input-form" name="telefone" type="text" required>
+                            </div>
+                        </div>
+                        <br>
+
+                        <!-- Linha com dois campos: Email e senha -->
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label class="bold">E-mail</label>
+                                <input class="form-control input-form" name="email" type="email" required>
+                            </div>
+                            <div class="col-md-3">
+                                <label class="bold">Senha</label>
+                                <input class="form-control input-form" name="senha" type="password" required>
+                            </div>
+                            <div class="col-md-3">
+                                <label class="bold">Confirmar senha</label>
+                                <input class="form-control input-form" name="confirmar_senha" type="password" required>
+                            </div>
+                        </div>
+                        <br>
+
+                        <div class="row align-items-center">
+                            <div class="col-md-auto">
+                                <button type="submit" class="btn btn-success">Registrar</button>
+                            </div>
+                            <div class="col">
+                                <span style="font-weight: bold">Já possui uma conta?</span>
+                                <a href="{% url 'logar' %}" class="btn btn-outline-success">Logar</a>
+                            </div>
+                        </div>
+                    </form>
+
+
+
+                    <!--<h3 style="position: absolute; bottom: 200px; font-weight: bold">Já possui uma conta ?&nbsp <a href="{% url 'logar' %}" class="btn btn-outline-success btn-lg">Logar</a> </h3>-->
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+    <script src="{% static 'autenticacao/js/buscar_cep.js' %}"></script>
+{% endblock %}

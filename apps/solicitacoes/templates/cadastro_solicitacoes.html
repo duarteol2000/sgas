@@ -1,0 +1,111 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+
+{% block 'head' %}
+    <link rel="stylesheet" href="{% static 'solicitacoes/css/solicitacoes.css' %}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+{% endblock %}
+
+{% block 'titulo' %}Cadastro de solicitações{% endblock %}
+
+{% block 'body' %}
+<div class="container mt-5">
+    <div class="card p-4 shadow">
+        <h2 class="mb-4 text-center">Cadastro de solicitações</h2>
+
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        <form method="POST" enctype="multipart/form-data">{% csrf_token %}
+
+            <div class="mb-3">
+                {% if request.user.is_authenticated and request.user.solicitante %}
+                    <div class="mb-3">
+                        {% if solicitante %}
+                            <p><strong>Solicitante:</strong> {{ solicitante.usuario.nome_completo }}</p>
+                        {% else %}
+                            <p class="text-danger">Nenhum solicitante vinculado.</p>
+                        {% endif %}
+                    </div>
+                {% endif %}
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Espécie</label>
+                {{ form.especie|add_class:"form-control" }}
+            </div>
+
+            <!-- aqui a parte de cadastro de endereço -->
+            <div class="mb-3">  
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        <label class="form-label">CEP</label>
+                        {{ form.cep|add_class:"form-control" }}
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label class="form-label">Tipo de Logradouro</label>
+                        {{ form.tipo_logradouro|add_class:"form-control" }}
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label class="form-label">Logradouro</label>
+                        {{ form.logradouro|add_class:"form-control" }}
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-2 mb-3">
+                        <label class="form-label">Número</label>
+                        {{ form.numero|add_class:"form-control" }}
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label class="form-label">Complemento</label>
+                        {{ form.complemento|add_class:"form-control" }}
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <label class="form-label">Bairro</label>
+                        {{ form.bairro|add_class:"form-control" }}
+                    </div>
+                    <div class="col-md-2 mb-3">
+                        <label class="form-label">Estado (UF)</label>
+                        {{ form.estado|add_class:"form-control" }}
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <label class="form-label">Cidade</label>
+                        {{ form.cidade|add_class:"form-select" }}
+                    </div>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Motivo</label>
+                {{ form.motivo|add_class:"form-control" }}
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Status</label>
+                {{ form.status|add_class:"form-select" }}
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Parecer Técnico</label>
+                {{ form.parecer_tecnico|add_class:"form-control" }}
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Imagem</label>
+                {{ form.imagem|add_class:"form-control" }}
+            </div>
+
+            <div class="mb-3 text-center">
+                <button type="submit" class="btn btn-success">Cadastrar</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

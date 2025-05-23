@@ -1,0 +1,67 @@
+/* Estilização da sidebar */
+.sidebar {
+    background-color: #27DB8F;
+    height: 100vh;
+
+    background-image: url("/static/autenticacao/img/imagem_semam_lateral.png");
+    background-size: 300px 400px;       /* Reduz o tamanho da imagem */
+    background-repeat: no-repeat;       /* Não repetir a imagem */
+    background-position: bottom left;   /* Alinhar ao canto inferior esquerdo */
+    background-attachment: local;       /* Rola junto com o conteúdo */
+    /* background-blend-mode: multiply; Mistura com o fundo */
+    /* opacity: 0.2; Torna a imagem suave */
+}
+
+/* Logo na sidebar */
+.logo_sidebar {
+    text-align: center;
+}
+
+.img_logo_sidebar {
+    width: 100%;
+    margin-top: 20px;
+}
+
+/* Área do formulário de cadastro */
+.area_cadastrar {
+    margin-top: 8%;
+    margin-left: 15%;
+    width: 70%;
+}
+
+/* Títulos e textos */
+.titulo {
+    font-weight: bold;
+}
+
+.sub-titulo {
+    color: gray;
+}
+
+.bold {
+    font-weight: bold;
+}
+
+/* Inputs do formulário */
+.input-form {
+    margin-top: 15px;
+    width: 100%;
+    padding: 5px;
+    outline: 0;
+}
+
+.input-form:focus {
+    border: 2px solid #27DB8F !important;
+    outline: 0 !important;
+    box-shadow: none !important;
+}
+
+/* Botão principal */
+.btn-first {
+    border: none;
+    padding: 5px 15px 5px 15px;
+    font-size: 25px;
+    background-color: #27DB8F;
+    color: white;
+    font-weight: bold;
+}
