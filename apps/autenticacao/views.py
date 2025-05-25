@@ -8,13 +8,13 @@ from django.contrib.auth.decorators import login_required
 from django.urls import reverse
 
 
-@login_required
+
 def cadastro(request):
     if request.method == "GET":    
         contexto = {
             "tipo_usuarios": TIPO_USUARIO_CHOICES,
         }
-        return render(request, 'cadastro.html', contexto)
+        return render(request, 'autenticacao/cadastro.html', contexto)
     elif request.method == "POST":
         username = request.POST.get('usuario')
         senha = request.POST.get('senha')
@@ -33,15 +33,15 @@ def cadastro(request):
         telefone = request.POST.get('telefone')
 
         if not password_is_valid(request, senha, confirmar_senha):
-            return redirect('cadastro')
+            return redirect('autenticacao:cadastro')
 
         if Usuario.objects.filter(username=username).exists():
             messages.add_message(request, constants.ERROR, "Usuário já cadastrado.")
-            return redirect('cadastro')
+            return redirect('autenticacao:cadastro')
 
         if Usuario.objects.filter(email=email).exists():
             messages.add_message(request, constants.ERROR, "E-mail já cadastrado.")
-            return redirect('cadastro')
+            return redirect('autenticacao:cadastro')
         
         try:
 
@@ -65,7 +65,7 @@ def cadastro(request):
                         is_active=False)
             usuario.save()
             messages.add_message(request, constants.SUCCESS, 'Usuário Cadastrador com Sucesso')
-            return redirect(reverse('logar'))
+            return redirect(reverse('autenticacao:logar'))
         except Exception as e:
             print('Erro ao cadastrar usuário:', e)
             messages.add_message(request, constants.ERROR, 'Erro interno do sistema')
@@ -75,7 +75,7 @@ def cadastro(request):
 
 def logar(request):
     if request.method == "GET":
-        return render(request, 'login.html')
+        return render(request, 'autenticacao/login.html')
     elif request.method == "POST":
         username = request.POST.get('usuario')
         senha = request.POST.get('senha')

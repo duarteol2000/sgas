@@ -3,14 +3,14 @@
 {% load static %}
 
 
-{% block 'head' %}
+{% block head %}
     <link rel="stylesheet" href="{% static 'autenticacao/css/cadastro.css' %}">
     
 {% endblock %}
 
-{% block 'titulo' %}Cadastre-se{% endblock %}
+{% block titulo %}Cadastre-se{% endblock %}
 
-{% block 'body' %}
+{% block body %}
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-3 sidebar">
@@ -39,7 +39,7 @@
                     <p class="sub-titulo">Crie sua conta</p>
                     <hr>
                     
-                    <form action="{% url "cadastro" %}" method="POST">{% csrf_token %}
+                    <form action="{% url "autenticacao:cadastro" %}" method="POST">{% csrf_token %}
 
                         <!-- Linha com dois campos: nome completo e tipo -->
                         <div class="row">
@@ -142,14 +142,11 @@
                             </div>
                             <div class="col">
                                 <span style="font-weight: bold">Já possui uma conta?</span>
-                                <a href="{% url 'logar' %}" class="btn btn-outline-success">Logar</a>
+                                <a href="{% url 'autenticacao:logar' %}" class="btn btn-outline-success">Logar</a>
                             </div>
                         </div>
                     </form>
 
-
-
-                    <!--<h3 style="position: absolute; bottom: 200px; font-weight: bold">Já possui uma conta ?&nbsp <a href="{% url 'logar' %}" class="btn btn-outline-success btn-lg">Logar</a> </h3>-->
                 </div>
 
             </div>

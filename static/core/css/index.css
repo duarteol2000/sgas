@@ -1,0 +1,91 @@
+body {
+    margin: 0;
+    padding: 0;
+    background-image: url("../img/carnauba.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+    height: 100vh;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+.overlay {
+    background-color: rgba(0, 100, 0, 0.6);
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: 0 0 15px rgba(0,0,0,0.3);
+    text-align: center;
+    max-width: 500px;
+    width: 90%;
+    backdrop-filter: blur(8px);
+}
+
+.logo {
+    display: block;
+    margin: 0 auto 20px auto; /* centraliza horizontalmente e espaça abaixo */
+    max-width: 200px;
+    height: auto;
+}
+
+
+.overlay h1 {
+    color: white;
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+}
+
+.overlay p {
+    color: #dfffd6;
+    font-size: 1.1rem;
+    margin-bottom: 30px;
+}
+
+.btn-large {
+    font-size: 1.1rem;
+    padding: 12px 25px;
+    border-radius: 8px;
+    width: 100%;
+    margin-bottom: 15px;
+    transition: all 0.3s ease-in-out;
+}
+
+.btn-cadastro {
+    background-color: #28a745;
+    color: white;
+    border: none;
+}
+
+.btn-cadastro:hover {
+    background-color: #218838;
+    transform: scale(1.02);
+}
+
+.btn-login {
+    background-color: transparent;
+    border: 2px solid #ffffffaa;
+    color: white;
+}
+
+.btn-login:hover {
+    background-color: #ffffff22;
+    transform: scale(1.02);
+}
+
+footer {
+    margin-top: 20px;
+    color: #fff;
+    font-size: 0.9rem;
+}
+
+footer a {
+    color: #d4ffd4;
+    text-decoration: none;
+}
+
+footer a:hover {
+    text-decoration: underline;
+}

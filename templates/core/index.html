@@ -1,0 +1,29 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Gestão Verde - Bem-vindo</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="{% static 'core/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'core/css/index.css' %}">
+</head>
+<body>
+    <div class="overlay">
+        <img src="{% static 'autenticacao/img/logo_meio_ambiente.png' %}" alt="Logo Secretaria" class="logo">
+        <h1>Gestão Verde</h1>
+        <p>Sistema de solicitação de poda e corte de árvores urbanas</p>
+
+        <a href="{% url 'autenticacao:cadastro' %}" class="btn btn-cadastro btn-large">🌱 Cadastre-se</a>
+        <a href="{% url 'autenticacao:logar' %}" class="btn btn-login btn-large">🌿 Entrar</a>
+
+        <footer>
+            <p>Desenvolvido por <a href="https://github.com/duarteol2000" target="_blank">Duarte Oliveira</a> 🌳</p>
+        </footer>
+    </div>
+
+    
+</body>
+</html>
