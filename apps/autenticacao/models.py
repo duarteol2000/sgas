@@ -2,7 +2,8 @@
 
 from django.contrib.auth.models import AbstractUser
 from django.db import models
-from utils.choices import UF_CHOICES, TIPO_USUARIO_CHOICES
+from django.core.exceptions import ValidationError
+from utils.choices import UF_CHOICES, TIPO_USUARIO_CHOICES, DOMINIOS_INSTITUCIONAIS
 
 
 class Usuario(AbstractUser):
@@ -22,5 +23,22 @@ class Usuario(AbstractUser):
     telefone = models.CharField(max_length=20)
     # o campo email e username já vem de AbstractUser
 
+    def clean(self):
+        """
+        Valida se o e-mail institucional está correto para usuários do tipo administrativo ou técnico.
+        """
+        if self.tipo in ['administrativo', 'tecnico']:
+            cidade_formatada = self.cidade.strip().title()
+
+            dominio_esperado = DOMINIOS_INSTITUCIONAIS.get(cidade_formatada)
+
+            if not dominio_esperado:
+                raise ValidationError({'cidade': f"A cidade '{self.cidade}' não possui domínio institucional configurado."})
+
+            if not self.email.endswith(dominio_esperado):
+                raise ValidationError({
+                    'email': f"E-mail institucional inválido. Deve terminar com '{dominio_esperado}'."
+                })
+            
     def __str__(self):
         return f"{self.nome_completo} ({self.email})"

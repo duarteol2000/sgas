@@ -34,3 +34,27 @@ TIPO_ARVORE_CHOICES = [
     ('exotica', 'Exótica'),
 ]
 
+DOMINIOS_INSTITUCIONAIS = {
+    'Maracanaú': '@maracanau.ce.gov.br',
+    'Fortaleza': '@fortaleza.ce.gov.br',
+    'Caucaia': '@caucaia.ce.gov.br',
+    'Pacatuba': '@pacatuba.ce.gov.br',
+    'Aquiraz': '@aquiraz.ce.gov.br',
+    'Eusébio': '@eusebio.ce.gov.br',
+    'Itaitinga': '@itaitinga.ce.gov.br',
+    'Guaiúba': '@guaiuba.ce.gov.br',
+}
+
+
+TIPO_SERVICO = {
+    'Poda': 'Poda',
+    'Corte': 'Corte',
+    'Plantio': 'Plantio',
+}
+
+#    ('em_analise', 'Em Análise'),
+STATUS_CHOICES = [
+    ('pendente', 'Pendente'),
+    ('atendido', 'Atendido'),
+    ('indeferido', 'Indeferido'),
+]

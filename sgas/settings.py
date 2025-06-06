@@ -34,7 +34,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'django.contrib.admin',
+   'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -42,14 +42,15 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'apps.autenticacao',
     'apps.arvores',
-    'apps.solicitacoes',
+    'apps.solicitantes',
+    'apps.solicitacoes.apps.SolicitacoesConfig',  # <- aqui o ajuste
     'core',
-]
+    'apps.localidades',]
 
 AUTH_USER_MODEL = 'autenticacao.Usuario'
 
 # URLs de redirecionamento após login/logout
-LOGIN_REDIRECT_URL = '/'
+LOGIN_REDIRECT_URL = '/redirecionar/'
 LOGOUT_REDIRECT_URL = '/'
 
 MIDDLEWARE = [

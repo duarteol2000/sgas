@@ -1,0 +1,151 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block head %}
+    <link rel="stylesheet" href="{% static 'solicitacoes/css/cadastro.css' %}">
+    <script src="{% static 'solicitacoes/js/buscar_cep.js' %}"></script>
+{% endblock %}
+
+{% block titulo %}Cadastro de Solicitação{% endblock %}
+
+{% block body %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-3 sidebar">
+            <div class="logo_sidebar">
+                <h2 class="logo">
+                    <img class="img_logo_sidebar" src="{% static 'autenticacao/img/logo_meio_ambiente.png' %}" alt="Logo">
+                </h2>
+            </div>
+        </div>
+
+        <div class="col-md-9">
+            <div class="area_cadastrar">
+                {% if messages %}
+                    <br>
+                    {% for message in messages %}
+                        <div class="alert {{ message.tags }}">{{ message }}</div>
+                    {% endfor %}
+                {% endif %}
+
+                <h2 class="titulo">Solicitação de Poda ou Corte</h2>
+                <p class="sub-titulo">Preencha os dados abaixo</p>
+                <hr>
+
+                <form method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+
+                    <h4 class="text-primary">Dados do Solicitante</h4>
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <label class="bold">CEP</label>
+                            {{ form.cep }}
+                        </div>
+                        <div class="col-md-8 mb-3">
+                            <label class="bold">Logradouro</label>
+                            {{ form.logradouro }}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <label class="bold">Número</label>
+                            {{ form.numero }}
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label class="bold">Complemento</label>
+                            {{ form.complemento }}
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label class="bold">Bairro</label>
+                            {{ form.bairro }}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="bold">Cidade</label>
+                            {{ form.cidade }}
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="bold">Estado</label>
+                            {{ form.estado }}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="bold">Tipo de Serviço</label>
+                            {{ form.tipo_servico }}
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="bold">Motivo</label>
+                            {{ form.motivo }}
+                        </div>
+                    </div>
+
+                    {% if tipo_usuario != 'solicitante' %}
+                        <hr>
+                        <div class="p-3 mb-4 rounded bg-success-subtle border border-success">
+                            <h4 class="text-success">Avaliação Técnica / Administrativa</h4>
+
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label class="bold">Espécie da Árvore</label>
+                                    {{ form.especie }}
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="bold">Data de Atendimento</label>
+                                    {{ form.data_atendimento }}
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label class="bold">Status</label>
+                                    {{ form.status }}
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="bold">Parecer Técnico</label>
+                                    {{ form.parecer_tecnico }}
+                                </div>
+                                <div class="col-md-12 mb-3">
+                                    <label class="bold">Resposta ao Solicitante</label>
+                                    {{ form.resposta_publica }}
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-12 mb-3">
+                                    <label class="bold">Imagens da Árvore (até 4)</label>
+                                    <input type="file" name="imagens" class="form-control input-form" multiple accept="image/*">
+                                    {% if imagens %}
+                                        <div class="mt-2">
+                                            <label class="bold">Imagens já enviadas:</label>
+                                            <div class="row">
+                                                {% for imagem in imagens %}
+                                                    <div class="col-md-3 mb-2">
+                                                        <img src="{{ imagem.imagem.url }}" class="img-thumbnail" alt="Imagem da solicitação">
+                                                    </div>
+                                                {% endfor %}
+                                            </div>
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+
+                    <div class="row align-items-center mt-4">
+                        <div class="col-md-auto">
+                            <button type="submit" class="btn btn-success">
+                                {% if solicitacao %}Salvar Alterações{% else %}Enviar Solicitação{% endif %}
+                            </button>
+                        </div>
+                        <div class="col">
+                            <a href="{% url 'core:plataforma' %}" class="btn btn-outline-secondary">Voltar</a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

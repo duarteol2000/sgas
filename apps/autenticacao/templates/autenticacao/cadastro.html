@@ -49,11 +49,11 @@
                             </div>
                             <div class="col-md-4">
                                 <label class="bold">Nome de Usuário</label>
-                                <input class="form-control input-form" name="usuario" type="text" required>
+                                <input class="form-control input-form" id="usuario" name="usuario" type="text" required>
                             </div>
                             <div class="col-md-3">
                                 <label class="bold">Tipo de usuário</label>
-                                <select class="form-control input-form" name="tipo" required>
+                                <select class="form-control input-form" id="tipo_usuario" name="tipo" required>
                                     <option value="">Selecione...</option>
                                     {% for valor, descricao in tipo_usuarios %}
                                         <option value="{{ valor }}">{{ descricao }}</option>
@@ -69,11 +69,15 @@
                                 <label class="bold">CEP</label>
                                 <input class="form-control input-form" name="cep" type="text" required>
                             </div>
-                            <div class="col-md-5">
+                            <div class="col-md-3">
                                 <label class="bold">Tipo de logradouro</label>
                                 <input class="form-control input-form" name="tipo_logradouro" type="text" required>
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-md-4">
+                                <label class="bold">Bairro </label>
+                                <input class="form-control input-form" name="bairro" type="text" required>
+                            </div>
+                            <div class="col-md-1">
                                 <label class="bold">Número</label>
                                 <input class="form-control input-form" name="numero" type="text" required>
                             </div>
@@ -88,7 +92,7 @@
                             </div>
                             <div class="col-md-4">
                                 <label class="bold">Cidade</label>
-                                <input class="form-control input-form" name="cidade" required></input>
+                                <input class="form-control input-form" id="cidade" name="cidade" required>
                             </div>
                         </div>
                         <br>
@@ -123,7 +127,7 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <label class="bold">E-mail</label>
-                                <input class="form-control input-form" name="email" type="email" required>
+                                <input class="form-control input-form" id="email" name="email" type="email" required>
                             </div>
                             <div class="col-md-3">
                                 <label class="bold">Senha</label>
@@ -153,5 +157,10 @@
 
         </div>
     </div>
+
+    <script type="application/json" id="dominios-data">
+        {{ dominios|safe|json_script:"dominios-data" }}
+    </script>
     <script src="{% static 'autenticacao/js/buscar_cep.js' %}"></script>
+    <script src="{% static 'autenticacao/js/auto_email.js' %}"></script>
 {% endblock %}

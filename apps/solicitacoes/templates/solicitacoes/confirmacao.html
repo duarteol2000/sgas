@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block head %}
+<link rel="stylesheet" href="{% static 'solicitacoes/css/cadastro.css' %}">
+<style>
+    .confirmacao-container {
+        padding: 50px 30px;
+        background-color: #f8f9fa;
+        border-radius: 8px;
+        text-align: center;
+        margin-top: 40px;
+    }
+    .confirmacao-container h2 {
+        color: #28a745;
+        font-weight: bold;
+    }
+    .confirmacao-container p {
+        font-size: 18px;
+        margin-top: 15px;
+    }
+    .protocolo {
+        font-size: 20px;
+        font-weight: bold;
+        color: #155724;
+        margin-top: 10px;
+        background-color: #d4edda;
+        padding: 10px;
+        border-radius: 5px;
+        display: inline-block;
+    }
+    .btn-voltar {
+        margin-top: 30px;
+    }
+</style>
+{% endblock %}
+
+{% block titulo %}Solicitação Enviada com Sucesso{% endblock %}
+
+{% block body %}
+<div class="container-fluid">
+    <div class="row">
+        <!-- Painel lateral -->
+        <div class="col-md-3 sidebar d-flex flex-column justify-content-between py-4">
+            <div>
+                <div class="logo_sidebar">
+                    <img class="img_logo_sidebar" src="{% static 'autenticacao/img/logo_meio_ambiente.png' %}">
+                </div>
+            </div>
+        </div>
+
+        <!-- Conteúdo principal -->
+        <div class="col-md-9">
+            <div class="confirmacao-container">
+                <h2>✅ Solicitação enviada com sucesso!</h2>
+                <p>Obrigado por registrar sua solicitação.<br>
+                Em breve nossa equipe técnica irá avaliar sua solicitação.</p>
+
+                {% if protocolo %}
+                    <div class="protocolo">
+                        Protocolo: {{ protocolo }}
+                    </div>
+                {% endif %}
+
+                <div>
+                    <a href="{% url 'core:index' %}" class="btn btn-primary btn-voltar">Voltar para o início</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

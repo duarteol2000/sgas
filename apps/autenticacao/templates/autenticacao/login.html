@@ -5,7 +5,7 @@
     <link rel="stylesheet" href="{% static 'autenticacao/css/cadastro.css' %}">
 {% endblock %}
 
-{% block titulo %}Cadastre-se{% endblock %}
+{% block titulo %}Login - SGAS{% endblock %}
 
 {% block body %}
     <div class="container-fluid">
@@ -26,12 +26,13 @@
             <div class="col-md-9">
                 <div class="area_cadastrar">
                     {% if messages %}
-                        <br>
-                        {% for message in messages %}
-                            <div class="alert {{message.tags}}">
-                                {{message}}
-                            </div>
-                        {% endfor %}
+                        <div class="mt-3">
+                            {% for message in messages %}
+                                <div class="alert {{ message.tags }}">
+                                    {{ message }}
+                                </div>
+                            {% endfor %}
+                        </div>
                     {% endif %}
                     <h2 class="titulo">Seja bem vindo</h2>
                     <p class="sub-titulo">Entre com sua conta</p>
@@ -39,12 +40,12 @@
                     
                     <form action="{% url 'autenticacao:logar' %}" method="POST">{% csrf_token %}
                         <span class="bold">Nome de usuário</span>
-                        <input class="form-control input-form" name="usuario" type="text" placeholder="Digite seu nome...">
+                        <input class="form-control input-form" name="usuario" type="text" placeholder="Digite seu nome..." required>
                         <br>
                         <span class="bold">Senha</span>
-                        <input class="form-control input-form" name="senha" type="password" placeholder="Digite sua senha...">
+                        <input class="form-control input-form" name="senha" type="password" placeholder="Digite sua senha..." required>
                         <br>
-                        <button class="btn-first">Logar</button>
+                        <button type="submit" class="btn-first">Logar</button>
 
                     </form>
 

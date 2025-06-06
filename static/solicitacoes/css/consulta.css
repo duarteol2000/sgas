@@ -1,0 +1,54 @@
+/* Container principal da consulta */
+.container {
+    margin-top: 60px;
+}
+
+/* Card da consulta */
+.card {
+    border: 1px solid #ccc;
+    background-color: #f9f9f9;
+}
+
+/* Título da seção */
+.card h3 {
+    font-weight: bold;
+    color: #2d6a4f;
+}
+
+/* Estilização do campo de entrada */
+.input-form {
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+/* Quando o campo está em foco */
+.input-form:focus {
+    border: 2px solid #27DB8F;
+    outline: none;
+    box-shadow: none;
+}
+
+/* Botão de consulta */
+.btn-success {
+    background-color: #27DB8F;
+    border: none;
+    padding: 10px 30px;
+    font-weight: bold;
+}
+
+.btn-success:hover {
+    background-color: #20c97d;
+}
+
+/* Resultados */
+.mt-4 p {
+    font-size: 16px;
+}
+
+/* Alerta de erro */
+.alert-danger {
+    font-size: 16px;
+    text-align: center;
+}

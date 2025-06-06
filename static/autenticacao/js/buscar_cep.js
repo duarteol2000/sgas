@@ -3,6 +3,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const tipoLogradouroInput = document.querySelector("input[name='tipo_logradouro']");
     const logradouroInput = document.querySelector("input[name='logradouro']");
     const cidadeInput = document.querySelector("input[name='cidade']");
+    const bairroInput = document.querySelector("input[name='bairro']");
     const ufInput = document.querySelector("input[name='uf']");
 
     if (!cepInput) return;
@@ -14,19 +15,29 @@ document.addEventListener("DOMContentLoaded", function () {
             fetch(`https://viacep.com.br/ws/${cep}/json/`)
                 .then(response => response.json())
                 .then(data => {
-                    console.log("Dados retornados da API:", data);  // <-- Aqui
+                    console.log("Dados retornados da API:", data);
 
                     if (!data.erro) {
                         const logradouroCompleto = data.logradouro || "";
                         const partes = logradouroCompleto.split(" ");
                         const tipo = partes.shift() || "";
                         const nomeLogradouro = partes.join(" ");
+                        const bairro = data.bairro || "";
 
                         if (tipoLogradouroInput) tipoLogradouroInput.value = tipo;
                         if (logradouroInput) logradouroInput.value = nomeLogradouro;
-                        if (cidadeInput) cidadeInput.value = data.localidade || "";
-                        if (ufInput) ufInput.value = data.uf || "";
+                        if (cidadeInput) {
+                            cidadeInput.value = data.localidade || "";
 
+                            // 👇 Chama a função de preenchimento do e-mail institucional
+                            atualizarEmailInstitucional();
+                        }
+                        if (ufInput) ufInput.value = data.uf || "";
+                        if (bairroInput) {
+                            bairroInput.value = bairro;
+                        } else {
+                            console.warn("⚠️ Campo 'bairro' não encontrado.");
+                        }
                     } else {
                         alert("CEP não encontrado.");
                     }
@@ -39,4 +50,24 @@ document.addEventListener("DOMContentLoaded", function () {
             alert("Por favor, insira um CEP válido com 8 números.");
         }
     });
+
+    // 🔄 Evento manual (caso o usuário mude a cidade manualmente)
+    document.querySelector('#cidade').addEventListener('change', atualizarEmailInstitucional);
 });
+
+// ✅ Função isolada para reutilizar no blur e no change
+function atualizarEmailInstitucional() {
+    const cidade = document.querySelector('#cidade').value;
+    const tipoUsuario = document.querySelector('#tipo_usuario').value;
+
+    if (cidade && tipoUsuario !== 'solicitante') {
+        fetch(`/localidades/buscar-dominio/?cidade=${cidade}`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.dominio) {
+                    const usuario = document.querySelector('#usuario').value;
+                    document.querySelector('#email').value = `${usuario}@${data.dominio}`;
+                }
+            });
+    }
+}

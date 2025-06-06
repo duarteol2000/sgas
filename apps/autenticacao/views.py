@@ -2,10 +2,13 @@ from django.shortcuts import render, redirect
 from utils.validacoes import password_is_valid
 from autenticacao.models import Usuario
 from django.contrib.messages import constants
-from django.contrib import messages, auth
-from utils.choices import TIPO_USUARIO_CHOICES
-from django.contrib.auth.decorators import login_required
+from django.core.exceptions import ValidationError
+from django.contrib import messages
+from django.contrib.auth import authenticate, login
+from utils.choices import TIPO_USUARIO_CHOICES, DOMINIOS_INSTITUCIONAIS
 from django.urls import reverse
+from django.contrib.auth.decorators import login_required
+
 
 
 
@@ -13,6 +16,7 @@ def cadastro(request):
     if request.method == "GET":    
         contexto = {
             "tipo_usuarios": TIPO_USUARIO_CHOICES,
+            'dominios': DOMINIOS_INSTITUCIONAIS,  # adiciona aqui para usar no template
         }
         return render(request, 'autenticacao/cadastro.html', contexto)
     elif request.method == "POST":
@@ -24,6 +28,7 @@ def cadastro(request):
         tipo = request.POST.get('tipo')
         cep = request.POST.get('cep')
         tipo_logradouro = request.POST.get('tipo_logradouro')
+        bairro = request.POST.get('bairro')
         logradouro = request.POST.get('logradouro')
         numero = request.POST.get('numero')
         cidade = request.POST.get('cidade')
@@ -32,6 +37,9 @@ def cadastro(request):
         contato = request.POST.get('contato')
         telefone = request.POST.get('telefone')
 
+        if request.method == 'POST':
+            print("Dados recebidos:", request.POST)
+        
         if not password_is_valid(request, senha, confirmar_senha):
             return redirect('autenticacao:cadastro')
 
@@ -45,7 +53,7 @@ def cadastro(request):
         
         try:
 
-            usuario = Usuario.objects.create_user(
+            usuario = Usuario(
                         username=username,  # herdado de AbstractUser
                         email=email,        # herdado
                         password=senha,     # herdado
@@ -55,6 +63,7 @@ def cadastro(request):
                         tipo=tipo,
                         cep=cep,
                         tipo_logradouro=tipo_logradouro,
+                        bairro = bairro,
                         logradouro=logradouro,
                         numero=numero,
                         cidade=cidade,  # um objeto da classe Cidade
@@ -63,34 +72,47 @@ def cadastro(request):
                         contato=contato,    # opcional
                         telefone=telefone,
                         is_active=False)
-            usuario.save()
+            
+            # Define a senha corretamente
+            usuario.set_password(senha)   # Validação completa
+            usuario.full_clean()          # Roda clean(), validações de campo e choices
+            usuario.save()                # Salva no banco
+
             messages.add_message(request, constants.SUCCESS, 'Usuário Cadastrador com Sucesso')
             return redirect(reverse('autenticacao:logar'))
+        
         except Exception as e:
             print('Erro ao cadastrar usuário:', e)
-            messages.add_message(request, constants.ERROR, 'Erro interno do sistema')
-            return redirect('/auth/cadastro')
-
-        """return HttpResponse('Testando')"""
+            messages.add_message(request, constants.ERROR, 'Erro no cadastro: verifique os campos e tente novamente.')
+            return redirect('autenticacao:cadastro')
 
 def logar(request):
     if request.method == "GET":
         return render(request, 'autenticacao/login.html')
+    
     elif request.method == "POST":
         username = request.POST.get('usuario')
         senha = request.POST.get('senha')
 
-        usuario = auth.authenticate(username=username, password=senha)
+        usuario = authenticate(username=username, password=senha)
 
         if not usuario:
             messages.add_message(request, constants.ERROR, 'Usuário ou senha inválidos')
-            return redirect('/auth/logar')
-        else:
-            auth.login(request, usuario)
-            # Redirecionamento de acordo com o tipo
+            return redirect('autenticacao:logar')
+        
+        login(request, usuario)
+
+        print(f"Usuário autenticado: {usuario}")
+        print(f"Tipo: {getattr(usuario, 'tipo', 'SEM TIPO')}")
+
+        
+        
+        # ✅ Agora garantimos que o tipo está sendo tratado corretamente
+        if hasattr(usuario, 'tipo'):
             if usuario.tipo == 'solicitante':
-                return redirect('/solicitacoes/cadastrar/')  # ou use reverse se quiser
-            elif usuario.tipo == 'agente':
-                return redirect('/painel/agente/')  # ajuste conforme a sua estrutura
+                return redirect('solicitacoes:cadastrar_solicitacoes')
             else:
-                return redirect('/')  # fallback se o tipo não for reconhecido
+                return redirect('core:plataforma')
+        else:
+            messages.error(request, 'Usuário sem tipo definido.')
+            return redirect('index')

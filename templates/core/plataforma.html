@@ -1,0 +1,135 @@
+{% extends 'base.html' %}
+
+{# Carrega os arquivos estáticos e o filtro customizado de dicionário #}
+{% load static %}
+{% load filtros %} {# Corrigido: carrega o filtro do caminho apps/solicitacoes/templatetags/filtros.py #}
+
+{% block head %}
+<link rel="stylesheet" href="{% static 'autenticacao/css/cadastro.css' %}">
+<style>
+    .btn-opcao {
+        padding: 15px;
+        font-size: 18px;
+        text-align: left;
+        border: none;
+        background-color: transparent;
+        color: white;
+        width: 100%;
+        text-decoration: none;
+        display: block;
+        margin: 10px 0;
+    }
+
+    .btn-opcao:hover {
+        background-color: #1fc781;
+        color: #fff;
+    }
+
+    .menu-links {
+        padding-left: 15px;
+        margin-top: 30px;
+    }
+
+    .dashboard-row {
+        margin-top: 20px;
+    }
+
+    .card-title {
+        font-size: 24px;
+    }
+</style>
+{% endblock %}
+
+{% block titulo %}Plataforma - SGAS{% endblock %}
+
+{% block body %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-3 sidebar d-flex flex-column justify-content-between py-4">
+            <div>
+                <div class="logo_sidebar">
+                    <img class="img_logo_sidebar" src="{% static 'autenticacao/img/logo_meio_ambiente.png' %}">
+                </div>
+                <div class="menu-links">
+                    <a href="{% url 'solicitantes:listar_solicitantes' %}" class="btn-opcao">👤 Solicitantes</a>
+                    <a href="{% url 'core:plataforma' %}" class="btn-opcao">📋 Solicitações</a>
+                    <a href="{% url 'arvores:listar_arvores' %}" class="btn-opcao">🌳 Árvores</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-9">
+            <div class="area_cadastrar">
+                {# Exibe mensagens de sucesso ou erro (formulários etc.) #}
+                {% if messages %}
+                    <div class="mt-3">
+                        {% for message in messages %}
+                            <div class="alert {{ message.tags }}">{{ message }}</div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+
+                <h2 class="titulo">Painel de Solicitações</h2>
+                <p class="sub-titulo">Resumo de solicitações do ano atual</p>
+                <hr>
+
+                {# Painel de contagem por status (ex: Pendente, Concluído) #}
+                <div class="row dashboard-row">
+                    {% for chave, label in status_choices %}
+                    <div class="col-md-3">
+                        <div class="card text-white {{ cores_status|get_item:chave }} mb-3">
+                            <div class="card-header">{{ label }}</div>
+                            <div class="card-body">
+                                <h5 class="card-title">
+                                    {{ contagem_status|get_item:chave }}
+                                </h5>
+                                <p class="card-text">Solicitações</p>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+
+                {# Botão para criar nova solicitação #}
+
+                <hr>
+                <h3 class="titulo">Lista de Solicitações</h3>
+
+                {# Tabela com as solicitações e botões de ação #}
+                <table class="table table-bordered table-striped mt-3">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th>ID</th>
+                            <th>Solicitante</th>
+                            <th>Tipo Serviço</th>
+                            <th>Status</th>
+                            <th>Data</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for s in solicitacoes %}
+                        <tr>
+                            <td>{{ s.id }}</td>
+                            <td>{{ s.solicitante.nome_completo }}</td>
+                            <td>{{ s.get_tipo_servico_display }}</td>
+                            <td>{{ s.get_status_display }}</td>
+                            <td>{{ s.data_solicitacao|date:"d/m/Y" }}</td>
+                            <td>
+                                <a href="{% url 'solicitacoes:editar_solicitacao' s.id %}" class="btn btn-sm btn-warning">
+                                    ✏️ Editar
+                                </a>
+                                <a href="#" class="btn btn-sm btn-info disabled">
+                                    🔍 Ver
+                                </a> {# futuramente pode apontar para uma view de detalhes #}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

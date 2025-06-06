@@ -12,6 +12,25 @@ body {
     justify-content: center;
 }
 
+.btn-consulta {
+    margin-top: 10px;
+    font-size: 18px;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-weight: bold;
+    transition: all 0.3s ease-in-out;
+    text-align: center;
+}
+
+.btn-consulta:hover {
+    transform: scale(1.05);
+    text-decoration: none;
+}
+
+.btn-success {
+    background-color: #28a745 !important;  /* Verde tradicional */
+    border-color: #28a745 !important;
+}
 
 .overlay {
     background-color: rgba(0, 100, 0, 0.6);
@@ -25,10 +44,9 @@ body {
 }
 
 .logo {
-    display: block;
-    margin: 0 auto 20px auto; /* centraliza horizontalmente e espaça abaixo */
-    max-width: 200px;
+    width: 400px;      /* aumente para 250px ou 300px se quiser maior */
     height: auto;
+    margin-bottom: 20px;
 }
 
 

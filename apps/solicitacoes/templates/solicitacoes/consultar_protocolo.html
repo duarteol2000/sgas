@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block titulo %}Consultar Solicitação{% endblock %}
+
+{% block head %}
+<link rel="stylesheet" href="{% static 'solicitacoes/css/consulta.css' %}">
+{% endblock %}
+
+{% block body %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow rounded p-4">
+                <h3 class="text-center mb-4">Consultar Solicitação</h3>
+
+                <form method="GET">
+                    <div class="form-group mb-3">
+                        <label for="protocolo" class="bold">Digite o número do protocolo</label>
+                        <input type="text" id="protocolo" name="protocolo" class="form-control input-form" placeholder="Ex: SGAS-12-20250605103000" required>
+                    </div>
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-success">Consultar</button>
+                        <a href="{% url 'core:index' %}" class="btn btn-outline-secondary ms-2">Voltar ao Início</a>
+                    </div>
+                </form>
+
+                {% if resultado %}
+                    <hr>
+                    <div class="mt-4">
+                        <h5 class="text-primary">Resultado da Consulta</h5>
+                        <p><strong>Data da Solicitação:</strong> {{ resultado.data_solicitacao|date:"d/m/Y H:i" }}</p>
+                        <p><strong>Status:</strong> {{ resultado.get_status_display }}</p>
+                        {% if resultado.resposta_publica %}
+                            <p><strong>Resposta do órgão:</strong> {{ resultado.resposta_publica }}</p>
+                        {% endif %}
+                    </div>
+                {% elif protocolo %}
+                    <hr>
+                    <div class="alert alert-danger mt-4">
+                        Nenhuma solicitação encontrada com esse protocolo.
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
