@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            font-size: 12px;
+        }
+
+        .header-table, .section-title, .info-table {
+            width: 100%;
+        }
+
+        .header-table td {
+            vertical-align: middle;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 14px;
+            font-weight: bold;
+            margin: 20px 0 10px 0;
+        }
+
+        .info-table td {
+            padding: 5px;
+            border: 1px solid #ccc;
+        }
+
+        .label {
+            font-weight: bold;
+            width: 30%;
+        }
+
+        .valor {
+            width: 70%;
+        }
+
+        hr {
+            margin: 30px 0;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Cabeçalho com as logos -->
+    <table width="100%" style="margin-bottom: 20px;">
+        <tr>
+            <td align="left" width="20%">
+                <img src="{{ logo_renea }}" width="100">
+            </td>
+            <td align="center" width="50%" style="font-size: 10px; line-height: 1.4; font-weight: bold;">
+                PREFEITURA DE MARACANAÚ<br>
+                SECRETARIA DE MEIO AMBIENTE<br>
+                RECURSOS NATURAIS E EDUCAÇÃO AMBIENTAL<br>
+                SETOR DE RECURSOS NATURAIS
+            </td>
+            <td align="right" width="20%">
+                <img src="{{ logo_meio_ambiente }}" width="180">
+            </td>
+        </tr>
+    </table>
+
+    <div class="section-title">DADOS DO REQUERENTE</div>
+    <table class="info-table">
+        <tr>
+            <td class="label">Protocolo:</td>
+            <td class="valor">{{ solicitacao.protocolo }}</td>
+        </tr>
+        <tr>
+            <td class="label">Data da Solicitação:</td>
+            <td class="valor">{{ solicitacao.data_solicitacao|date:"d/m/Y H:i" }}</td>
+        </tr>
+        <tr>
+            <td class="label">Nome do Solicitante:</td>
+            <td class="valor">{{ solicitacao.solicitante.nome_completo }}</td>
+        </tr>
+        <tr>
+            <td class="label">CPF/CNPJ:</td>
+            <td class="valor">{{ solicitacao.solicitante.cpf_cnpj }}</td>
+        </tr>
+        <tr>
+            <td class="label">Endereço:</td>
+            <td class="valor">{{ solicitacao.solicitante.logradouro }}, {{ solicitacao.solicitante.numero }} - {{ solicitacao.solicitante.bairro }} - {{ solicitacao.solicitante.cidade }}/{{ solicitacao.solicitante.uf }}</td>
+        </tr>
+        <tr>
+            <td class="label">Telefone:</td>
+            <td class="valor">{{ solicitacao.solicitante.telefone }}</td>
+        </tr>
+    </table>
+
+    <div class="section-title">DADOS DA SOLICITAÇÃO</div>
+    <table class="info-table">
+        <tr>
+            <td class="label">Tipo de Serviço:</td>
+            <td class="valor">{{ solicitacao.get_tipo_servico_display }}</td>
+        </tr>
+        <tr>
+            <td class="label">Espécie da Árvore:</td>
+            <td class="valor">{{ solicitacao.especie.nome }}</td>
+        </tr>
+        <tr>
+            <td class="label">Endereço da Árvore:</td>
+            <td class="valor">{{ solicitacao.endereco }}</td>
+        </tr>
+        <tr>
+            <td class="label">Status:</td>
+            <td class="valor">{{ solicitacao.get_status_display }}</td>
+        </tr>
+        <tr>
+            <td class="label">Parecer Técnico / Observações:</td>
+            <td class="valor">{{ solicitacao.parecer_tecnico|default:"-" }}</td>
+        </tr>
+    </table>
+
+    <p style="margin-top: 20px;">
+        <strong>Mensagem ao Solicitante:</strong><br>
+        Sua solicitação foi registrada com sucesso. Em breve, nossa equipe entrará em contato conforme os trâmites administrativos e análise técnica.
+    </p>
+
+    <hr>
+
+    <!-- Cópia para o solicitante -->
+    <div class="section-title">DADOS DO REQUERENTE - CÓPIA DO SOLICITANTE</div>
+    <table class="info-table">
+        <tr>
+            <td class="label">Protocolo:</td>
+            <td class="valor">{{ solicitacao.protocolo }}</td>
+        </tr>
+        <tr>
+            <td class="label">Data da Solicitação:</td>
+            <td class="valor">{{ solicitacao.data_solicitacao|date:"d/m/Y H:i" }}</td>
+        </tr>
+        <tr>
+            <td class="label">Nome do Solicitante:</td>
+            <td class="valor">{{ solicitacao.solicitante.nome_completo }}</td>
+        </tr>
+        <tr>
+            <td class="label">Tipo de Serviço:</td>
+            <td class="valor">{{ solicitacao.get_tipo_servico_display }}</td>
+        </tr>
+        <tr>
+            <td class="label">Endereço da Árvore:</td>
+            <td class="valor">{{ solicitacao.endereco }}</td>
+        </tr>
+    </table>
+
+</body>
+</html>

@@ -1,8 +1,7 @@
 {% extends 'base.html' %}
 
-{# Carrega os arquivos estáticos e o filtro customizado de dicionário #}
 {% load static %}
-{% load filtros %} {# Corrigido: carrega o filtro do caminho apps/solicitacoes/templatetags/filtros.py #}
+{% load filtros %}
 
 {% block head %}
 <link rel="stylesheet" href="{% static 'autenticacao/css/cadastro.css' %}">
@@ -35,9 +34,28 @@
     }
 
     .card-title {
-        font-size: 24px;
+        font-size: 20px;
     }
+
+    
 </style>
+<script>
+    function ajustarCampoInput() {
+        const campo = document.querySelector('[name="campo"]');
+        const input = document.querySelector('[name="valor"]');
+
+        if (campo && input) {
+            if (campo.value === 'data') {
+                input.type = 'date';
+                input.placeholder = '';
+            } else {
+                input.type = 'text';
+                input.placeholder = 'Digite o valor para filtrar';
+            }
+        }
+    }
+    document.addEventListener('DOMContentLoaded', ajustarCampoInput);
+</script>
 {% endblock %}
 
 {% block titulo %}Plataforma - SGAS{% endblock %}
@@ -60,7 +78,6 @@
 
         <div class="col-md-9">
             <div class="area_cadastrar">
-                {# Exibe mensagens de sucesso ou erro (formulários etc.) #}
                 {% if messages %}
                     <div class="mt-3">
                         {% for message in messages %}
@@ -73,7 +90,6 @@
                 <p class="sub-titulo">Resumo de solicitações do ano atual</p>
                 <hr>
 
-                {# Painel de contagem por status (ex: Pendente, Concluído) #}
                 <div class="row dashboard-row">
                     {% for chave, label in status_choices %}
                     <div class="col-md-3">
@@ -83,19 +99,44 @@
                                 <h5 class="card-title">
                                     {{ contagem_status|get_item:chave }}
                                 </h5>
-                                <p class="card-text">Solicitações</p>
+                                <!--<p class="card-text">Solicitações</p>-->
                             </div>
                         </div>
                     </div>
                     {% endfor %}
                 </div>
 
-                {# Botão para criar nova solicitação #}
-
                 <hr>
                 <h3 class="titulo">Lista de Solicitações</h3>
 
-                {# Tabela com as solicitações e botões de ação #}
+                <form method="get" class="row gx-2 gy-1 align-items-end mb-3" oninput="ajustarCampoInput()">
+                    <div class="col-auto">
+                        <select name="campo" class="form-select form-select-sm">
+                            <option value="nome" {% if request.GET.campo == "nome" %}selected{% endif %}>Nome</option>
+                            <option value="cpf" {% if request.GET.campo == "cpf" %}selected{% endif %}>CPF</option>
+                            <option value="protocolo" {% if request.GET.campo == "protocolo" %}selected{% endif %}>Protocolo</option>
+                            <option value="status" {% if request.GET.campo == "status" %}selected{% endif %}>Status</option>
+                            <option value="data" {% if request.GET.campo == "data" %}selected{% endif %}>Data</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-4">
+                        <input type="text" name="valor" class="form-control form-control-sm" placeholder="Digite o valor para filtrar" value="{{ request.GET.valor }}">
+                    </div>
+
+                    <div class="col-auto">
+                        <button type="submit" class="btn btn-success btn-sm" title="Aplicar filtro">🔍 Filtrar</button>
+                    </div>
+
+                    <div class="col-auto">
+                        <a href="{% url 'core:plataforma' %}" class="btn btn-secondary btn-sm" title="Limpar filtros">🧹 Limpar</a>
+                    </div>
+
+                    <div class="col-auto">
+                        <a href="{% url 'core:exportar_pdf' %}?{{ request.GET.urlencode }}" class="btn btn-danger btn-sm" title="Exportar resultados">📄 Exportar</a>
+                    </div>
+                </form>
+
                 <table class="table table-bordered table-striped mt-3">
                     <thead class="thead-dark">
                         <tr>
@@ -116,12 +157,9 @@
                             <td>{{ s.get_status_display }}</td>
                             <td>{{ s.data_solicitacao|date:"d/m/Y" }}</td>
                             <td>
-                                <a href="{% url 'solicitacoes:editar_solicitacao' s.id %}" class="btn btn-sm btn-warning">
-                                    ✏️ Editar
-                                </a>
-                                <a href="#" class="btn btn-sm btn-info disabled">
-                                    🔍 Ver
-                                </a> {# futuramente pode apontar para uma view de detalhes #}
+                                <a href="{% url 'solicitacoes:editar_solicitacao' s.id %}" class="btn btn-sm btn-warning">✏️ Editar</a>
+                                <a href="{% url 'core:ver_comprovante' s.id %}" class="btn btn-sm btn-info">🔍 Ver </a>
+                                <!--<a href="{% url 'core:ver_solicitacao' s.id %}" class="btn btn-sm btn-info" class="btn btn-sm btn-info disabled">🔍 Ver</a>-->
                             </td>
                         </tr>
                         {% endfor %}

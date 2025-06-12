@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block titulo %}Comprovante de Solicitação{% endblock %}
+
+{% block body %}
+<div class="container mt-4">
+    <div class="card shadow-sm">
+        <div class="card-header bg-success text-white">
+            <h4 class="mb-0">✅ Comprovante de Solicitação</h4>
+        </div>
+        <div class="card-body">
+            <p><strong>Protocolo:</strong> {{ solicitacao.protocolo }}</p>
+            <p><strong>Data da Solicitação:</strong> {{ solicitacao.data_solicitacao|date:"d/m/Y H:i" }}</p>
+            <p><strong>Solicitante:</strong> {{ solicitacao.solicitante.nome_completo }}</p>
+            <p><strong>CPF/CNPJ:</strong> {{ solicitacao.solicitante.cpf_cnpj }}</p>
+            <p><strong>Tipo de Serviço:</strong> {{ solicitacao.get_tipo_servico_display }}</p>
+            <p><strong>Status:</strong> {{ solicitacao.get_status_display }}</p>
+
+            {% if solicitacao.endereco %}
+            <p><strong>Endereço:</strong> {{ solicitacao.endereco }}</p>
+            {% endif %}
+
+            {% if solicitacao.parecer_publico %}
+            <hr>
+            <h6 class="text-success">📢 Parecer Público</h6>
+            <p>{{ solicitacao.parecer_publico }}</p>
+            {% endif %}
+
+            <a href="{% url 'core:plataforma' %}" class="btn btn-secondary mt-3">🔙 Voltar</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

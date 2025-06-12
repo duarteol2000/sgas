@@ -54,7 +54,7 @@ TIPO_SERVICO = {
 
 #    ('em_analise', 'Em Análise'),
 STATUS_CHOICES = [
-    ('pendente', 'Pendente'),
-    ('atendido', 'Atendido'),
-    ('indeferido', 'Indeferido'),
+    ('PENDENTE', 'PENDENTE'),
+    ('ATENDIDO', 'ATENDIDO'),
+    ('INDEFERIDO', 'INDEFERIDO'),
 ]
