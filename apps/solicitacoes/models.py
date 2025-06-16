@@ -34,5 +34,5 @@ class ImagemSolicitacao(models.Model):
     data_envio = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"Imagem da Solicitação #{self.solicitacao.id} - {self.solicitante.nome_completo}"
+        return f"Imagem da Solicitação #{self.solicitacao.id} - {self.solicitacao.solicitante.nome_completo}"
 

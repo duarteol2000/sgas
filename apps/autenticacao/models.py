@@ -21,6 +21,7 @@ class Usuario(AbstractUser):
     cpf_cnpj = models.CharField(max_length=18)
     contato = models.CharField(max_length=100, blank=True, null=True)
     telefone = models.CharField(max_length=20)
+    token_confirmacao = models.CharField(max_length=64, blank=True, null=True)
     # o campo email e username já vem de AbstractUser
 
     def clean(self):
